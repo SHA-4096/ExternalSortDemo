@@ -2,7 +2,27 @@ package pipeline
 
 import (
 	"fmt"
+	"sort"
 )
+
+func InMemSort(in <-chan int) <-chan int {
+	out := make(chan int, 1024)
+	go func() {
+		a := []int{}
+		for v := range in {
+			a = append(a, v)
+		}
+		sort.Ints(a)
+		fmt.Println("InMemSortDone")
+
+		for _, v := range a {
+			out <- v
+		}
+		close(out)
+	}()
+	return out
+
+}
 
 func Merge(in1, in2 <-chan int) <-chan int {
 	out := make(chan int, 1024)

@@ -5,7 +5,7 @@ import (
 	"io"
 )
 
-func WriteToFile(writer io.Writer, in <-chan int) {
+func WriteToSink(writer io.Writer, in <-chan int) {
 	for v := range in {
 		buffer := make([]byte, 8) //byte是无符号8位整型，实际上一次写了64位
 		binary.BigEndian.PutUint64(buffer, uint64(v))

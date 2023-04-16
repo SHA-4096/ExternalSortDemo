@@ -19,23 +19,15 @@ func RandGen(num int) <-chan int {
 }
 
 //global vars
-const FileName = "data.in"
-const length = 64
-
-func main() {
-	file, err := os.Create(FileName)
+func generate() {
+	file, err := os.Create(fileNameIn)
 	if err != nil {
 		panic((err))
 	}
 	defer file.Close()   //main执行完毕之后才会关闭
 	p := RandGen(length) //现在p是一个channel
 	writer := bufio.NewWriter(file)
-	pipeline.WriteToFile(writer, p)
+	pipeline.WriteToSink(writer, p)
 	writer.Flush()
-	file, err = os.Open(FileName)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
 
 }
