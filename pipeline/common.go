@@ -2,6 +2,7 @@ package pipeline
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 )
 
@@ -16,6 +17,7 @@ func CreatePipeline(filename string, fileSize, chunkCount int) <-chan int {
 		file.Seek(int64(i*chunkSize), 0)
 		source := ReadFromFile(bufio.NewReader(file), chunkSize)
 		sortRes = append(sortRes, InMemSort(source))
+		fmt.Println(sortRes[:])
 
 	}
 	return Merge_main(sortRes...)

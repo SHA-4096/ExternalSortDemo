@@ -12,9 +12,9 @@ func InMemSort(in <-chan int) <-chan int {
 		for v := range in {
 			a = append(a, v)
 		}
-		sort.Ints(a)
+		sort.Ints(a[:])
 		fmt.Println("InMemSortDone")
-
+		fmt.Println(a[:])
 		for _, v := range a {
 			out <- v
 		}
@@ -43,10 +43,11 @@ func Merge(in1, in2 <-chan int) <-chan int {
 }
 
 func Merge_main(inputs ...<-chan int) <-chan int {
+	fmt.Println(inputs)
 	if len(inputs) == 1 {
 		return inputs[0]
 	}
-	mid := len(inputs) >> 1
+	mid := len(inputs) / 2
 	return Merge(
 		Merge_main(inputs[:mid]...),
 		Merge_main(inputs[mid:]...)) //这里括号还不能换行
