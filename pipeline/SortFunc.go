@@ -50,6 +50,6 @@ func Merge_main(inputs ...<-chan int) <-chan int {
 	mid := len(inputs) / 2
 	return Merge(
 		Merge_main(inputs[:mid]...),
-		Merge_main(inputs[mid:]...)) //这里括号还不能换行
+		Merge_main(inputs[mid+1:]...)) //这里括号还不能换行
 
 }
