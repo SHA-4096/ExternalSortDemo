@@ -10,7 +10,7 @@ import (
 
 const fileNameOut = "sorted.out"
 const fileNameIn = "data.in"
-const length = 64
+const length = 1024
 
 func main() {
 	for {
@@ -39,7 +39,6 @@ func extSort() {
 	p := pipeline.CreatePipeline(fileNameIn, length*64, 4)
 	writer := bufio.NewWriter(fileOut)
 	pipeline.WriteToSink(writer, p)
-	fmt.Println("AAA")
 	writer.Flush()
 
 }

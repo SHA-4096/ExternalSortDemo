@@ -14,7 +14,6 @@ func InMemSort(in <-chan int) <-chan int {
 		}
 		sort.Ints(a[:])
 		fmt.Println("InMemSortDone")
-		fmt.Println(a[:])
 		for _, v := range a {
 			out <- v
 		}
@@ -31,9 +30,11 @@ func Merge(in1, in2 <-chan int) <-chan int {
 		v2, ok2 := <-in2
 		for ok1 || ok2 {
 			if !ok2 || (ok1 && v1 <= v2) {
-				out <- v2
-			} else {
 				out <- v1
+				v1, ok1 = <-in1
+			} else {
+				out <- v2
+				v2, ok2 = <-in2
 			}
 		}
 		close(out)
@@ -43,13 +44,12 @@ func Merge(in1, in2 <-chan int) <-chan int {
 }
 
 func Merge_main(inputs ...<-chan int) <-chan int {
-	fmt.Println(inputs)
 	if len(inputs) == 1 {
 		return inputs[0]
 	}
 	mid := len(inputs) / 2
 	return Merge(
 		Merge_main(inputs[:mid]...),
-		Merge_main(inputs[mid+1:]...)) //这里括号还不能换行
+		Merge_main(inputs[mid:]...)) //这里括号还不能换行
 
 }
